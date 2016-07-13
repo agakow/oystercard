@@ -6,6 +6,7 @@ describe Oystercard do
   let(:exit_station) {double :station}
   credit = 10
   minimum_fare = Journey::MINIMUM_FARE
+  penalty_fare = Journey::PENALTY_FARE
 
   describe 'initialize' do
 
@@ -56,21 +57,29 @@ end
       expect{subject.touch_out(exit_station)}.to change{subject.journey_history.size}.by(1)
     end
 
-    before(:each)do
+    it "touches out" do
       subject.top_up(credit)
       subject.touch_in(entry_station)
       subject.touch_out(exit_station)
-    end
-
-
-    it "touches out" do
       expect(subject).not_to be_in_journey
     end
 
-    it "deducts fare" do
-      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(- minimum_fare)
-    end
   end
+
+    describe '#deduct' do
+
+      it 'deducts the correct fare' do
+        subject.top_up(credit)
+        subject.touch_in(entry_station)
+      expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(- minimum_fare)
+      end
+
+      it 'deducts the penalty fare' do
+        subject.top_up(credit)
+        expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(- penalty_fare)
+      end
+
+    end
 
   describe '#in_journey?' do
     it "is initially not in a journey" do
