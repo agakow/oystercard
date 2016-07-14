@@ -2,8 +2,7 @@ require 'journeylog'
 
 describe JourneyLog do
   let(:station) {double :station}
-  let(:journey_class){double :journey_class, new: current_journey}
-  let(:current_journey){double :current_journey}
+  let(:journey_class){double :journey_class, new: station}
   subject {described_class.new(journey_class: journey_class)}
 
   describe '#initialize' do
@@ -11,7 +10,7 @@ describe JourneyLog do
       expect(subject.journeys).to be_empty
     end
     it 'initially expects current_journey to be nil' do
-      expect(subject.current_journey).to be_falsey
+      expect(subject.current_journey).to be_nil
     end
   end
 
@@ -21,34 +20,36 @@ describe JourneyLog do
         subject.start(station)
       end
       it 'creates a current_journey' do
-        allow(journey_class).to receive(:new).and_return current_journey
+        allow(journey_class).to receive(:new)
         subject.start(station)
-        expect(subject.journeys).to include current_journey
+        expect(subject.journeys).to include subject.current_journey
       end
     end
 
     describe '#finish' do
       context 'complete journey' do
-        before :example do
-          expect(current_journey).to receive(:finish)
-        end
+
+            let(:current_journey){double :current_journey}
             it 'stores the complete journey' do
+            allow(station).to receive(:finish)
             subject.start(station)
             subject.end(station)
-            expect(subject.journeys).to include current_journey
+            expect(subject.journeys).to eq [station]
           end
             it 'expects current journey to be nil' do
+            allow(station).to receive(:finish)
             subject.start(station)
             subject.end(station)
-            expect(subject.current_journey).to be_falsey
+            expect(subject.current_journey).to be_nil
           end
         end
 
         context 'incomplete journey' do
           it 'contains only the exit station' do
+
           subject.end(station)
-          p subject.journeys
-          expect(subject.journeys).to
+          subject.journeys
+          expect(subject.journeys).to include station
           end
         end
     end
