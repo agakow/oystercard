@@ -9,16 +9,16 @@ class Journey
 
   def initialize(entry_station)
     @fare = PENALTY_FARE
-    @route = []
+    # @route = []
     @entry_station = entry_station
-    @route << @entry_station
+    # @route << @entry_station
     @complete = false
 
   end
 
   def finish(exit_station)
     @exit_station = exit_station
-    @route << @exit_station
+    # @route << @exit_station
     @fare = MINIMUM_FARE
     @complete = true
     self
