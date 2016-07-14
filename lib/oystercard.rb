@@ -14,7 +14,7 @@ class Oystercard
 
   def initialize
     @balance = DEFAULT_BALANCE
-    @in_journey = false
+
     @journey_history = []
 
   end
@@ -40,7 +40,7 @@ class Oystercard
     if @in_journey == false
       deduct(PENALTY_FARE)
     else
-    @journey.exit_station(station)
+    @journey.finish(station)
     deduct(@journey.fare)
     @journey_history << @journey.route
     @in_journey = false

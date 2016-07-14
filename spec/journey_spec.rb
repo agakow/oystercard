@@ -15,7 +15,7 @@ describe Journey do
   end
 
   it "returns itself when exiting journey" do
-    expect(subject.exit_station(station)).to eq(subject)
+    expect(subject.finish(station)).to eq(subject)
   end
 
   context "given an entry station" do
@@ -33,7 +33,7 @@ describe Journey do
     let(:exit_station) {double :exit_station}
 
     before do
-      subject.exit_station(exit_station)
+      subject.finish(exit_station)
     end
 
     it "calculates a fare" do

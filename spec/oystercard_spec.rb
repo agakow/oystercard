@@ -74,7 +74,7 @@ end
       expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(- minimum_fare)
       end
 
-      it 'deducts the penalty fare' do
+      xit 'deducts the penalty fare' do
         subject.top_up(credit)
         expect{subject.touch_out(exit_station)}.to change{subject.balance}.by(- penalty_fare)
       end
