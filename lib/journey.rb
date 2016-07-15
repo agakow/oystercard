@@ -10,18 +10,18 @@ class Journey
     @complete = false
   end
 
-  def complete?
-    !!entry_station && !!exit_station
+  def incomplete?
+    !entry_station && !exit_station
   end
 
-  # def start_station(station)
-  #   @start_station = station
-  # end
+  def complete?
+    @complete
+  end
 
   def ended(exit_station=nil)
     @exit_station = exit_station
-    @complete = true if complete?
-    @fare = MINIMUM_FARE if complete?
+    @complete = true unless incomplete?
+    @fare = MINIMUM_FARE unless incomplete?
     self
   end
 
