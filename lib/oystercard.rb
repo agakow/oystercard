@@ -23,15 +23,14 @@ class OysterCard
 
   def touch_in(station)
     fail "Card has insufficient balance" if @balance < MINIMUM_BALANCE
-    journey = Journey.new
-    journey.start_station(station)
-    @journeys << journey
+    @journey = Journey.new(station)
+    @journeys << @journey
   end
 
   def touch_out(station)
-    deduct MINIMUM_FARE
-    journey = @journeys.last
-    journey.end_station(station)
+    #deduct MINIMUM_FARE
+    @journey = Journey.new if @journey == nil
+    @journey.ended(station)
   end
 
   private
@@ -39,4 +38,5 @@ class OysterCard
   def deduct amount
     @balance -= amount
   end
+
 end
